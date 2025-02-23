@@ -1,6 +1,6 @@
 import { GenomeFeatureViewer as LibraryGenomeFeatureViewer } from 'genomefeatures'
 
-import { useEffect, useId } from 'react'
+import { useEffect } from 'react'
 
 import 'genomefeatures/style.css'
 
@@ -10,6 +10,7 @@ export default function GenomeFeatureViewer({
   variantData,
   genome,
   type,
+  divId,
 }: {
   region: { chromosome: string; start: number; end: number }
   type: string
@@ -18,8 +19,8 @@ export default function GenomeFeatureViewer({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   variantData: any
   genome: string
+  divId: string
 }) {
-  const r = useId()
   useEffect(() => {
     new LibraryGenomeFeatureViewer(
       {
@@ -33,11 +34,11 @@ export default function GenomeFeatureViewer({
           },
         ],
       },
-      `#${CSS.escape(r)}`,
+      `#${divId}`,
       900,
       500,
     )
-  }, [type, trackData, genome, region, r, variantData])
+  }, [type, trackData, genome, divId, region, variantData])
 
-  return <svg id={r}></svg>
+  return <svg id={divId}></svg>
 }

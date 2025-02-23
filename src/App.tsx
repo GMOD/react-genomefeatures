@@ -68,6 +68,7 @@ export default function App() {
         <div style={{ color: 'red' }}>{`${error}`}</div>
       ) : trackData && variantData ? (
         <GenomeFeatureViewer
+          divId="testing"
           type="ISOFORM_AND_VARIANT"
           genome={genome}
           region={region}

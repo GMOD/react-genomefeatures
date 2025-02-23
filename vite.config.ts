@@ -12,7 +12,7 @@ export default defineConfig({
     outDir: './dist',
     emptyOutDir: true,
     lib: {
-      entry: resolve(__dirname, 'src/GenomeFeatureViewer.ts'),
+      entry: resolve(__dirname, 'src/GenomeFeatureViewer.tsx'),
       name: 'GenomeFeatureViewer',
       fileName: 'react-genomefeatures',
     },

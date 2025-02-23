@@ -15,6 +15,10 @@ This example demonstrates using the fetchNCListData and fetchTabixVcfData
 utility functions in a useEffect to get feature data and the feature rendering,
 along with a select box showing that users can change the viewed region around
 
+Currently requires manually specifying a unique divId, as internally
+auto-generating a id with useId and or handle with useRef isn't working quite
+yet...will be updated if figured out
+
 ```typescript
 import {
   fetchNCListData,
