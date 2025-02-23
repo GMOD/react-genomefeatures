@@ -3,7 +3,7 @@ import {
   fetchTabixVcfData,
   parseLocString,
 } from 'genomefeatures'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import GenomeFeatureViewer from './GenomeFeatureViewer'
 
@@ -23,11 +23,13 @@ const genome = 'fly'
 
 export default function App() {
   const [error, setError] = useState<unknown>()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [trackData, setTrackData] = useState<any>()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [variantData, setVariantData] = useState<any>()
   const [choice, setChoice] = useState(options[0])
+  const region = useMemo(() => parseLocString(choice), [choice])
 
-  const region = parseLocString(choice)
   useEffect(() => {
     ;(async () => {
       try {
@@ -48,7 +50,6 @@ export default function App() {
       }
     })()
   }, [region])
-  console.log({ trackData, variantData })
   return (
     <div>
       <div>
