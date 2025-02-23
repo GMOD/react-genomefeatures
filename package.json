@@ -1,8 +1,30 @@
 {
   "name": "react-genomefeatures",
-  "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": "GMOD/react-genomefeatures",
   "type": "module",
+  "description": "A React+D3 based genome feature rendering",
+  "keywords": [
+    "genome feature viewer",
+    "genomics",
+    "genes",
+    "transcripts"
+  ],
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/react-genomefeatures.umd.cjs",
+  "module": "./dist/react-genomefeatures.js",
+  "types": "./dist/react-genomefeatures.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/react-genomefeatures.d.ts",
+      "import": "./dist/react-genomefeatures.js",
+      "require": "./dist/react-genomefeatures.umd.cjs"
+    },
+    "./style.css": "./dist/react-genomefeatures.css"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

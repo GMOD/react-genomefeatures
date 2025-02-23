@@ -24,15 +24,11 @@ import {
   fetchNCListData,
   fetchTabixVcfData,
   parseLocString,
+  GenomeFeatureViewer,
 } from 'genomefeatures'
 import { useEffect, useState } from 'react'
-import { GenomeFeatureViewer  } from 'genomefeatures'
-
-import { useEffect, useId } from 'react'
 
 import 'genomefeatures/style.css'
-
-
 
 const options = [
   '2L:130639..135911',
@@ -50,11 +46,13 @@ const genome = 'fly'
 
 export default function App() {
   const [error, setError] = useState<unknown>()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [trackData, setTrackData] = useState<any>()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [variantData, setVariantData] = useState<any>()
   const [choice, setChoice] = useState(options[0])
+  const region = useMemo(() => parseLocString(choice), [choice])
 
-  const region = parseLocString(choice)
   useEffect(() => {
     ;(async () => {
       try {
@@ -75,8 +73,6 @@ export default function App() {
       }
     })()
   }, [region])
-
-  console.log({ trackData, variantData })
   return (
     <div>
       <div>
@@ -95,6 +91,7 @@ export default function App() {
         <div style={{ color: 'red' }}>{`${error}`}</div>
       ) : trackData && variantData ? (
         <Features
+          divId="testing"
           type="ISOFORM_AND_VARIANT"
           genome={genome}
           region={region}
@@ -108,21 +105,25 @@ export default function App() {
   )
 }
 
-export default function Features({
+function Features({
   region,
   trackData,
   variantData,
   genome,
   type,
+  divId,
 }: {
   region: { chromosome: string; start: number; end: number }
   type: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   trackData: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   variantData: any
   genome: string
+  divId: string
 }) {
   useEffect(() => {
-    const r = new  GenomeFeatureViewer(
+    new LibraryGenomeFeatureViewer(
       {
         region,
         genome,
@@ -134,13 +135,17 @@ export default function Features({
           },
         ],
       },
-      `#hello`,
+      `#${divId}`,
       900,
       500,
     )
-  }, [type, trackData, genome, region, variantData])
+  }, [type, trackData, genome, divId, region, variantData])
 
-  return <svg id="hello"></svg>
+  return <svg id={divId}></svg>
 }
 
 ```
+
+## Note
+
+This is still a new library, feel free to add issues or feedback
