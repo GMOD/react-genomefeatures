@@ -11,6 +11,10 @@ yarn add react-genomefeatures
 
 ## Usage
 
+This example demonstrates using the fetchNCListData and fetchTabixVcfData
+utility functions in a useEffect to get feature data and the feature rendering,
+along with a select box showing that users can change the viewed region around
+
 ```typescript
 import {
   fetchNCListData,
