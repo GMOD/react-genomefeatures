@@ -1,0 +1,138 @@
+# react-genomefeatures
+
+A React wrapper for the genomefeatures library
+https://github.com/GMOD/genomefeatures
+
+## Install
+
+```
+yarn add react-genomefeatures
+```
+
+## Usage
+
+```typescript
+import {
+  fetchNCListData,
+  fetchTabixVcfData,
+  parseLocString,
+} from 'genomefeatures'
+import { useEffect, useState } from 'react'
+import { GenomeFeatureViewer  } from 'genomefeatures'
+
+import { useEffect, useId } from 'react'
+
+import 'genomefeatures/style.css'
+
+
+
+const options = [
+  '2L:130639..135911',
+  '2R:23974973..23989002',
+  '3R:22693140..22699809',
+  '2R:23974972..23989001',
+  '2R:18614210..18615018',
+  'X:2023822..2043557',
+]
+const vcfTabixUrl =
+  'https://s3.amazonaws.com/agrjbrowse/VCF/7.0.0/fly-latest.vcf.gz'
+const ncListUrlTemplate =
+  'https://s3.amazonaws.com/agrjbrowse/docker/7.0.0/FlyBase/fruitfly/tracks/All_Genes/{refseq}/trackData.jsonz'
+const genome = 'fly'
+
+export default function App() {
+  const [error, setError] = useState<unknown>()
+  const [trackData, setTrackData] = useState<any>()
+  const [variantData, setVariantData] = useState<any>()
+  const [choice, setChoice] = useState(options[0])
+
+  const region = parseLocString(choice)
+  useEffect(() => {
+    ;(async () => {
+      try {
+        const trackData = await fetchNCListData({
+          region,
+          urlTemplate: ncListUrlTemplate,
+        })
+
+        const variantData = await fetchTabixVcfData({
+          url: vcfTabixUrl,
+          region,
+        })
+        setVariantData(variantData)
+        setTrackData(trackData)
+      } catch (e) {
+        console.error(e)
+        setError(e)
+      }
+    })()
+  }, [region])
+
+  console.log({ trackData, variantData })
+  return (
+    <div>
+      <div>
+        <select
+          value={choice}
+          onChange={event => setChoice(event.target.value)}
+        >
+          {options.map(opt => (
+            <option key={opt} value={opt}>
+              {opt}
+            </option>
+          ))}
+        </select>
+      </div>
+      {error ? (
+        <div style={{ color: 'red' }}>{`${error}`}</div>
+      ) : trackData && variantData ? (
+        <Features
+          type="ISOFORM_AND_VARIANT"
+          genome={genome}
+          region={region}
+          trackData={trackData}
+          variantData={variantData}
+        />
+      ) : (
+        <div>Loading...</div>
+      )}
+    </div>
+  )
+}
+
+export default function Features({
+  region,
+  trackData,
+  variantData,
+  genome,
+  type,
+}: {
+  region: { chromosome: string; start: number; end: number }
+  type: string
+  trackData: any
+  variantData: any
+  genome: string
+}) {
+  useEffect(() => {
+    const r = new  GenomeFeatureViewer(
+      {
+        region,
+        genome,
+        tracks: [
+          {
+            type,
+            trackData,
+            variantData,
+          },
+        ],
+      },
+      `#hello`,
+      900,
+      500,
+    )
+  }, [type, trackData, genome, region, variantData])
+
+  return <svg id="hello"></svg>
+}
+
+```
