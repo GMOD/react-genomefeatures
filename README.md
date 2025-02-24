@@ -24,9 +24,9 @@ import {
   fetchNCListData,
   fetchTabixVcfData,
   parseLocString,
-  GenomeFeatureViewer,
 } from 'genomefeatures'
-import { useEffect, useState } from 'react'
+import GenomeFeatureViewer from 'react-genomefeatures'
+import { useEffect, useMemo, useState } from 'react'
 
 import 'genomefeatures/style.css'
 
@@ -52,6 +52,7 @@ export default function App() {
   const [variantData, setVariantData] = useState<any>()
   const [choice, setChoice] = useState(options[0])
   const region = useMemo(() => parseLocString(choice), [choice])
+  console.log({ GenomeFeatureViewer })
 
   useEffect(() => {
     ;(async () => {
@@ -90,7 +91,7 @@ export default function App() {
       {error ? (
         <div style={{ color: 'red' }}>{`${error}`}</div>
       ) : trackData && variantData ? (
-        <Features
+        <GenomeFeatureViewer
           divId="testing"
           type="ISOFORM_AND_VARIANT"
           genome={genome}
@@ -103,45 +104,6 @@ export default function App() {
       )}
     </div>
   )
-}
-
-function Features({
-  region,
-  trackData,
-  variantData,
-  genome,
-  type,
-  divId,
-}: {
-  region: { chromosome: string; start: number; end: number }
-  type: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  trackData: any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  variantData: any
-  genome: string
-  divId: string
-}) {
-  useEffect(() => {
-    new LibraryGenomeFeatureViewer(
-      {
-        region,
-        genome,
-        tracks: [
-          {
-            type,
-            trackData,
-            variantData,
-          },
-        ],
-      },
-      `#${divId}`,
-      900,
-      500,
-    )
-  }, [type, trackData, genome, divId, region, variantData])
-
-  return <svg id={divId}></svg>
 }
 
 ```
