@@ -11,15 +11,17 @@
     "genes",
     "transcripts"
   ],
+  "exports": "dist/GenomeFeatureViewer.js",
   "files": [
     "dist"
   ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b",
+    "build": "tsc",
+    "prebuild": "rimraf dist",
     "lint": "eslint --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "build-demo": "yarn build -c vite-gh-pages.config.ts",
+    "build-demo": "vite build",
     "preversion": "npm run lint && npm run build",
     "postversion": "git push --follow-tags",
     "predeploy": "yarn build-demo",
@@ -41,6 +43,7 @@
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.14.0",
     "prettier": "^3.5.2",
+    "rimraf": "^6.0.1",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.22.0",
     "vite": "^6.1.0",

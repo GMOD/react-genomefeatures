@@ -1,22 +1,10 @@
-import { dirname, resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
-import dts from 'vite-plugin-dts'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
-
-// this is a 'library mode' vite config
 export default defineConfig({
+  base: './',
   build: {
     sourcemap: true,
-    outDir: './dist',
+    outDir: './out',
     emptyOutDir: true,
-    lib: {
-      entry: resolve(__dirname, 'src/GenomeFeatureViewer.tsx'),
-      name: 'GenomeFeatureViewer',
-      fileName: 'react-genomefeatures',
-    },
   },
-
-  plugins: [dts()],
 })
