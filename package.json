@@ -14,20 +14,9 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/react-genomefeatures.umd.cjs",
-  "module": "./dist/react-genomefeatures.js",
-  "types": "./dist/react-genomefeatures.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/react-genomefeatures.d.ts",
-      "import": "./dist/react-genomefeatures.js",
-      "require": "./dist/react-genomefeatures.umd.cjs"
-    },
-    "./style.css": "./dist/react-genomefeatures.css"
-  },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b",
     "lint": "eslint --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "build-demo": "yarn build -c vite-gh-pages.config.ts",
